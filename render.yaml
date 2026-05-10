@@ -1,0 +1,35 @@
+services:
+  # ── Backend (FastAPI) ──
+  - type: web
+    name: datacleaner-backend
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://datacleaner-frontend.onrender.com,http://localhost:3000
+      - key: LOG_LEVEL
+        value: INFO
+      - key: MAX_FILE_SIZE_MB
+        value: "50"
+      - key: SESSION_TTL_MINUTES
+        value: "30"
+    healthCheckPath: /api/health
+
+  # ── Frontend (Next.js) ──
+  - type: web
+    name: datacleaner-frontend
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: cd frontend && npm ci && npm run build
+    startCommand: cd frontend && npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://datacleaner-backend.onrender.com
+      - key: PORT
+        value: "3000"
