@@ -7,14 +7,15 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-# Add backend to path for imports
+# Add backend and root to path
 sys.path.append(os.path.join(os.getcwd(), "backend"))
+sys.path.append(os.getcwd())
 
-from backend.core.config import get_settings
-from backend.core.file_loader import load_dataframe, get_preview
-from backend.tools.profiler import compute_profile
-from backend.agents.orchestrator import run_ai_pipeline
-from backend.shared.schemas import CleaningCriteria, PipelineStage
+from core.config import get_settings
+from core.file_loader import load_dataframe, get_preview
+from tools.profiler import compute_profile
+from agents.orchestrator import run_ai_pipeline
+from shared.schemas import CleaningCriteria, PipelineStage
 
 # Page Config
 st.set_page_config(
