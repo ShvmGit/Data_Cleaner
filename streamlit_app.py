@@ -68,11 +68,7 @@ st.markdown("### AI-powered data cleaning and exploratory data analysis")
 with st.sidebar:
     st.header("⚙️ Configuration")
     
-    groq_api_key = st.text_input("Groq API Key", type="password", value=os.environ.get("GROQ_API_KEY", ""))
-    if groq_api_key:
-        os.environ["GROQ_API_KEY"] = groq_api_key
-    else:
-        st.warning("Please provide a Groq API Key")
+
 
     st.divider()
     
