@@ -172,6 +172,9 @@ def handle_outliers(
                 total_outliers += int(n_outliers)
 
                 if method == "iqr_cap":
+                    # Convert to float to avoid TypeError when assigning float caps to int columns
+                    if not pd.api.types.is_float_dtype(result[col]):
+                        result[col] = result[col].astype(float)
                     result.loc[result[col] < lower, col] = lower
                     result.loc[result[col] > upper, col] = upper
                 else:
