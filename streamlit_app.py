@@ -160,13 +160,19 @@ if uploaded_file:
             tab1, tab2, tab3 = st.tabs(["📊 Visualizations", "💡 AI Insights", "🧹 Cleaning Log"])
             
             with tab1:
+                import plotly.graph_objects as go
                 for plot in plots:
-                    import plotly.graph_objects as go
-                    import plotly.io as pio
-                    
-                    # Convert dict to plotly figure
-                    fig = go.Figure(plot)
-                    st.plotly_chart(fig, use_container_width=True)
+                    if plot.get("type") == "summary":
+                        # Summary table — render as a dataframe
+                        st.subheader(plot.get("title", "Summary Statistics"))
+                        if plot.get("data"):
+                            st.dataframe(pd.DataFrame(plot["data"]), use_container_width=True)
+                    elif "figure" in plot:
+                        # Plotly chart — extract the nested figure dict
+                        fig = go.Figure(plot["figure"])
+                        st.plotly_chart(fig, use_container_width=True)
+                    else:
+                        st.warning(f"Unknown plot format: {plot.get('title', 'Untitled')}")
             
             with tab2:
                 for insight in insights:
